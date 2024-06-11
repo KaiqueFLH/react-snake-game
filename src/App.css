@@ -1,0 +1,39 @@
+section{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f1f1f1;
+}
+
+.square{
+    width: 600px;
+    height: 600px;
+    background-color: #fff;
+    border: 1px solid #000;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    align-items: start;
+    flex-direction: column;
+    font-size: 20px;
+    font-weight: bold;
+    color: #000;
+    cursor: pointer;
+}
+
+.cell{
+    width: 59.8px;
+    height: 59.8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #000;
+}
+
+.snake{
+    background-color: purple;
+    width: 59.8px;
+    height: 59.8px;
+}
