@@ -32,6 +32,36 @@ section{
     border: 1px solid #000;
 }
 
+.cellBodySnake{
+    width: 59.8px;
+    height: 59.8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #000;
+    background-color: rgb(61, 190, 61);
+}
+
+.cellHeadSnake{
+    width: 59.8px;
+    height: 59.8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #000;
+    background-image: url("../src/assets/Group\ 48.svg");
+}
+
+.cellApple{
+    width: 59.8px;
+    height: 59.8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #000;
+    background-color: red;
+}
+
 .snake{
     background-color: purple;
     width: 59.8px;

@@ -1,9 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
-import { useState } from "react";
 
 function App() {
-  let [snakeBoard, setSnakeBoard] = useState([
+  const [snakeBoard, setSnakeBoard] = useState([
     ["", "", "", "", "", "", "", "", "", ""],
     ["", "", "", "", "", "", "", "", "", ""],
     ["", "", "", "", "", "", "", "", "", ""],
@@ -16,107 +15,88 @@ function App() {
     ["", "", "", "", "", "", "", "", "", ""],
   ]);
 
-  let [eatApple,setEatApple] = useState(false)
+  const [eatApple, setEatApple] = useState(false);
+  const [snake, setSnake] = useState([
+    [0, 0],
+    [1, 0],
+    [2, 0],
+  ]); // Cobra inicial com comprimento de 3
 
   useEffect(() => {
     const handleKeyDown = (e) => {
       let newSnakeBoard = [...snakeBoard];
-      let tale = [];
-      let xPos, yPos;
-      for (let i = 0; i < newSnakeBoard.length; i++) {
-        for (let j = 0; j < newSnakeBoard[i].length; j++) {
-          if (newSnakeBoard[i][j] === "()") {
-            xPos = i;
-            yPos = j;
-          }
-        }
-      }
+      let newSnake = [...snake];
+      let [xPos, yPos] = newSnake[newSnake.length - 1];
 
+      let newHead;
       if (e.key === "ArrowUp") {
-        if (yPos > 0) {
-          if (eatApple) {
-            tale.push("X");
-          }
-          for (let i = 0; i < tale.length; i++) {
-            newSnakeBoard[xPos][yPos] = "X";
-          }
-          // newSnakeBoard[xPos][yPos] = "X";
-
-          console.log(yPos);
-          if (newSnakeBoard[xPos][yPos - 1] === "X") {
-            window.location.reload();
-            alert("Game Over");
-          } else newSnakeBoard[xPos][yPos - 1] = "()";
-        }
+        newHead = [xPos, yPos - 1];
+      } else if (e.key === "ArrowDown") {
+        newHead = [xPos, yPos + 1];
+      } else if (e.key === "ArrowLeft") {
+        newHead = [xPos - 1, yPos];
+      } else if (e.key === "ArrowRight") {
+        newHead = [xPos + 1, yPos];
+      } else {
+        return;
       }
-      if (e.key === "ArrowDown") {
-        if (yPos < newSnakeBoard[0].length - 1) {
-          if (eatApple) {
-            tale.push("X");
-          }
 
-          for (let i = 0; i < tale.length; i++) {
-            newSnakeBoard[xPos][yPos] = "X";
-          }
-          // newSnakeBoard[xPos][yPos] = "X";
-
-          if (newSnakeBoard[xPos][yPos + 1] === "X") {
-            window.location.reload();
-            alert("Game Over");
-          } else newSnakeBoard[xPos][yPos + 1] = "()";
-        }
+      if (
+        newHead[0] < 0 ||
+        newHead[0] >= newSnakeBoard.length ||
+        newHead[1] < 0 ||
+        newHead[1] >= newSnakeBoard[0].length ||
+        newSnake.some(([x, y]) => x === newHead[0] && y === newHead[1])
+      ) {
+        window.location.reload();
+        alert("Game Over");
+        return;
       }
-      if (e.key === "ArrowLeft") {
-        if (xPos > 0) {
-          if (eatApple) {
-            tale.push("X");
-          }
-          for (let i = 0; i < tale.length; i++) {
-            newSnakeBoard[xPos][yPos] = "X";
-          }
-          // newSnakeBoard[xPos][yPos] = "X";
 
-          if (newSnakeBoard[xPos - 1][yPos] === "X") {
-            window.location.reload();
-            alert("Game Over");
-          } else newSnakeBoard[xPos - 1][yPos] = "()";
-        }
+      newSnake.push(newHead);
+
+      if (newSnakeBoard[newHead[0]][newHead[1]] === "A") {
+        setEatApple(true);
+        let x, y;
+        do {
+          x = Math.floor(Math.random() * 10);
+          y = Math.floor(Math.random() * 10);
+        } while (newSnakeBoard[x][y] === "()" || newSnakeBoard[x][y] === "X");
+        newSnakeBoard[x][y] = "A";
+        newSnakeBoard[newHead[0]][newHead[1]] = "()";
+      } else {
+        setEatApple(false);
+        let [tailX, tailY] = newSnake.shift();
+        newSnakeBoard[tailX][tailY] = "";
       }
-      if (e.key === "ArrowRight") {
-        if (xPos < newSnakeBoard.length - 1) {
-          // newSnakeBoard[xPos][yPos] = "X";
-          if (eatApple) {
-            tale.push("X");
-          }
-          for (let i = 0; i < tale.length; i++) {
-            newSnakeBoard[xPos][yPos] = "X";
-          }
 
-          if (newSnakeBoard[xPos + 1][yPos] === "X") {
-            window.location.reload();
-            alert("Game Over");
-          } else newSnakeBoard[xPos + 1][yPos] = "()";
+      newSnakeBoard[xPos][yPos] = "X";
+      newSnakeBoard[newHead[0]][newHead[1]] = "()";
 
-          //todo = fazer ele comer a maçã quando passar por cima
-        }
-      }
       setSnakeBoard(newSnakeBoard);
+      setSnake(newSnake);
     };
 
     window.addEventListener("keydown", handleKeyDown);
 
+
+
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [snakeBoard]);
+  }, [snakeBoard, snake]);
 
   useEffect(() => {
     let newSnakeBoard = [...snakeBoard];
-    newSnakeBoard[0][0] = "()";
-    //todo = colocar maça aleatoriamente em um espaço vazio
-    let x = Math.floor(Math.random() * 10);
-    let y = Math.floor(Math.random() * 10);
-    console.log(x, y);
+    newSnakeBoard[0][0] = "X";
+    newSnakeBoard[1][0] = "X";
+    newSnakeBoard[2][0] = "()";
+
+    let x, y;
+    do {
+      x = Math.floor(Math.random() * 10);
+      y = Math.floor(Math.random() * 10);
+    } while (newSnakeBoard[x][y] === "()" || newSnakeBoard[x][y] === "X");
     newSnakeBoard[x][y] = "A";
     setSnakeBoard(newSnakeBoard);
   }, []);
@@ -126,13 +106,29 @@ function App() {
       <section>
         {snakeBoard.map((row, rowIndex) => {
           return (
-            <div key={rowIndex}>
+            <div key={rowIndex} className="row">
               {row.map((cell, cellIndex) => {
-                return (
-                  <div className="cell" key={cellIndex}>
-                    {cell}
-                  </div>
-                );
+                if (cell === "X") {
+                  return (
+                    <div key={cellIndex} className="cellBodySnake">
+                    </div>
+                  );
+                }else if (cell === "()") {
+                  return (
+                    <div key={cellIndex} className="cellHeadSnake">
+                    </div>
+                  );
+                } else if (cell === "A") {
+                  return (
+                    <div key={cellIndex} className="cellApple">
+                    </div>
+                  );
+                } else {
+                  return (
+                    <div key={cellIndex} className="cell">
+                    </div>
+                  );
+                }
               })}
             </div>
           );
