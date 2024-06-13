@@ -15,6 +15,7 @@ function App() {
     ["", "", "", "", "", "", "", "", "", ""],
   ]);
 
+  const [direction, setDirection] = useState("ArrowRight");
   const [eatApple, setEatApple] = useState(false);
   const [snake, setSnake] = useState([
     [0, 0],
@@ -24,21 +25,38 @@ function App() {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
+      if (
+        e.key === "ArrowUp" ||
+        e.key === "ArrowDown" ||
+        e.key === "ArrowLeft" ||
+        e.key === "ArrowRight"
+      ) {
+        setDirection(e.key);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
+  useEffect(() => {
+    const moveSnake = () => {
       let newSnakeBoard = [...snakeBoard];
       let newSnake = [...snake];
       let [xPos, yPos] = newSnake[newSnake.length - 1];
-
       let newHead;
-      if (e.key === "ArrowUp") {
+
+      if (direction === "ArrowUp") {
         newHead = [xPos, yPos - 1];
-      } else if (e.key === "ArrowDown") {
+      } else if (direction === "ArrowDown") {
         newHead = [xPos, yPos + 1];
-      } else if (e.key === "ArrowLeft") {
+      } else if (direction === "ArrowLeft") {
         newHead = [xPos - 1, yPos];
-      } else if (e.key === "ArrowRight") {
+      } else if (direction === "ArrowRight") {
         newHead = [xPos + 1, yPos];
-      } else {
-        return;
       }
 
       if (
@@ -77,14 +95,12 @@ function App() {
       setSnake(newSnake);
     };
 
-    window.addEventListener("keydown", handleKeyDown);
-
-
+    const intervalId = setInterval(moveSnake, 150);
 
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
+      clearInterval(intervalId);
     };
-  }, [snakeBoard, snake]);
+  }, [snake, snakeBoard, direction]);
 
   useEffect(() => {
     let newSnakeBoard = [...snakeBoard];
@@ -113,7 +129,7 @@ function App() {
                     <div key={cellIndex} className="cellBodySnake">
                     </div>
                   );
-                }else if (cell === "()") {
+                } else if (cell === "()") {
                   return (
                     <div key={cellIndex} className="cellHeadSnake">
                     </div>
