@@ -26,10 +26,10 @@ function App() {
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (
-        e.key === "ArrowUp" ||
-        e.key === "ArrowDown" ||
-        e.key === "ArrowLeft" ||
-        e.key === "ArrowRight"
+        (e.key === "ArrowUp" && direction != "ArrowDown") ||
+        (e.key === "ArrowDown" && direction != "ArrowUp") ||
+        (e.key === "ArrowLeft" && direction != "ArrowRight") ||
+        (e.key === "ArrowRight" && direction != "ArrowLeft")
       ) {
         setDirection(e.key);
       }
@@ -40,7 +40,7 @@ function App() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [direction]);
 
   useEffect(() => {
     const moveSnake = () => {
@@ -66,8 +66,25 @@ function App() {
         newHead[1] >= newSnakeBoard[0].length ||
         newSnake.some(([x, y]) => x === newHead[0] && y === newHead[1])
       ) {
-        window.location.reload();
+        newSnake = [
+          [0, 0],
+          [1, 0],
+          [2, 0],
+        ];
+        setSnake(newSnake);
         alert("Game Over");
+        window.location.reload();
+        return;
+      }
+      if (newSnake.length === 100) {
+        newSnake = [
+          [0, 0],
+          [1, 0],
+          [2, 0],
+        ];
+        setSnake(newSnake);
+        alert("You Win");
+        window.location.reload();
         return;
       }
 
@@ -79,7 +96,7 @@ function App() {
         do {
           x = Math.floor(Math.random() * 10);
           y = Math.floor(Math.random() * 10);
-        } while (newSnakeBoard[x][y] === "()" || newSnakeBoard[x][y] === "X");
+        } while (newSnakeBoard[x][y] !== "");
         newSnakeBoard[x][y] = "A";
         newSnakeBoard[newHead[0]][newHead[1]] = "()";
       } else {
@@ -95,7 +112,7 @@ function App() {
       setSnake(newSnake);
     };
 
-    const intervalId = setInterval(moveSnake, 150);
+    const intervalId = setInterval(moveSnake, 100);
 
     return () => {
       clearInterval(intervalId);
@@ -112,44 +129,49 @@ function App() {
     do {
       x = Math.floor(Math.random() * 10);
       y = Math.floor(Math.random() * 10);
-    } while (newSnakeBoard[x][y] === "()" || newSnakeBoard[x][y] === "X");
+    } while (newSnakeBoard[x][y] !== "");
+    newSnakeBoard[x][y] = "A";
     newSnakeBoard[x][y] = "A";
     setSnakeBoard(newSnakeBoard);
   }, []);
 
   return (
     <>
-      <section>
-        {snakeBoard.map((row, rowIndex) => {
-          return (
-            <div key={rowIndex} className="row">
-              {row.map((cell, cellIndex) => {
-                if (cell === "X") {
-                  return (
-                    <div key={cellIndex} className="cellBodySnake">
-                    </div>
-                  );
-                } else if (cell === "()") {
-                  return (
-                    <div key={cellIndex} className="cellHeadSnake">
-                    </div>
-                  );
-                } else if (cell === "A") {
-                  return (
-                    <div key={cellIndex} className="cellApple">
-                    </div>
-                  );
-                } else {
-                  return (
-                    <div key={cellIndex} className="cell">
-                    </div>
-                  );
-                }
-              })}
-            </div>
-          );
-        })}
-      </section>
+      <div className="geralDiv">
+        <div className="scoreBoard">
+          <h1>JOGO DO RATÃO</h1>
+
+          <h2>Tamanho do seu Rato: {snake.length}</h2>
+        </div>
+
+        <section>
+          {snakeBoard.map((row, rowIndex) => {
+            return (
+              <div key={rowIndex} className="row">
+                {row.map((cell, cellIndex) => {
+                  if (cell === "X") {
+                    return (
+                      <div key={cellIndex} className="cellBodySnake"></div>
+                    );
+                  } else if (cell === "()") {
+                    return (
+                      <div key={cellIndex} className="cellHeadSnake"></div>
+                    );
+                  } else if (cell === "A") {
+                    return <div key={cellIndex} className="cellApple"></div>;
+                  } else {
+                    return <div key={cellIndex} className="cell"></div>;
+                  }
+                })}
+              </div>
+            );
+          })}
+        </section>
+
+        <button onClick={}>
+          Iniciar Jogo do Ratão.
+        </button> 
+      </div>
     </>
   );
 }
