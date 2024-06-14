@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import "../choicePers/ChoicePers.css"
+import { useContext } from 'react';
+import { PersContext } from '../contexts/persProvider';
 
 export default function ChoicePers() {
   
@@ -7,26 +9,39 @@ export default function ChoicePers() {
     let listaPers = [
 
         {
-            image: "/assets/cabeca.svg",
-            name: "",
+            image: "/assets/cobraComLingua.svg",
+            name: "COBRONA",
+            colorBody:""
         },
         {
-            image: "/assets/ratoCabeca.svg",
-            name: "",
+            image: "/assets/cabecaRato.svg",
+            name: "RATÃO",
+            colorBody:""
         },
         {
-            image: "/assets/macacoCabeca.svg",
-            name: "",
+            image: "/assets/macacoCompleto.svg",
+            name: "GORILÃO",
+            colorBody:""
         }
 
     ]
   
+    const pers = useContext(PersContext);
+
     return (
     <>
       <div className="screen">
         {
             listaPers.map((item,index) =>{
-                return <img className="pers" key={index} src={item.image} />
+                return (
+                    <Link to={`/game`} key={index} onClick={() => pers.setPers(item.name)}>
+                        <div className="abovePersDiv">
+                            <img src={item.image} className='pers'/>
+
+                            {item.name && <p>{item.name}</p>}
+                        </div>
+                    </Link>
+                )
             })
         }
       </div>

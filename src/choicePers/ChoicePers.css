@@ -12,3 +12,12 @@
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+.abovePersDiv{
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+}

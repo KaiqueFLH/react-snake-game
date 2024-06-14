@@ -32,7 +32,7 @@ section {
   width: 600px;
   height: 600px;
   background-color: #fff;
-  border: 1px solid #000;
+  border: 10px solid #000;
   display: flex;
   flex-wrap: wrap;
   justify-content: start;
@@ -46,51 +46,75 @@ section {
 }
 
 .cell {
-  border-radius: 10px;
   width: 59.8px;
   height: 59.8px;
   display: flex;
   justify-content: center;
+  border: 1px solid black;
   align-items: center;
-  border: 1px solid #000;
 }
 
 .cellBodySnake {
-  border-radius: 10px;
+  border: 1px solid black;
   width: 59.8px;
   height: 59.8px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid #000;
-  background-image: url("../src/assets/ratoCorpo.png");
-  background-repeat: no-repeat;
-  background-size: cover;
+  background: rgb(32, 116, 32);
 }
 
 .cellHeadSnake {
-  border-radius: 10px;
   width: 59.8px;
   height: 59.8px;
+  overflow: visible;
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
-  border: 1px solid #000;
-  background-image: url("../src/assets/ratoCabeca.png");
-  background-repeat: no-repeat;
-  background-size: cover;
+  overflow: visible;
+  position: relative;
 }
+
 
 .cellApple {
-  border-radius: 10px;
+  border: 1px solid black;
   width: 59.8px;
   height: 59.8px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid #000;
-  background-image: url("../src/assets/queijin.png");
+  background-image: url("../../public/assets/maca.png");
   background-repeat: no-repeat;
   background-size: cover;
-}
+  }
+  
+  
+  .cellHeadSnake .snakeTongue {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+  }
+  
+  .cellHeadSnake .tongue-up {
+    top: -20px;
+    left: 48%;
+    transform: translateX(-48%) rotate(180deg);
+  }
 
+  .cellHeadSnake .tongue-down {
+    bottom: -20px;
+    left: 48%;
+    transform: translateX(-48%) rotate(0deg);
+  }
+  
+  .cellHeadSnake .tongue-left {
+    left: -20px;
+    top: 48%;
+    transform: translateY(-48%) rotate(90deg);
+  }
+  
+  .cellHeadSnake .tongue-right {
+    right: -20px;
+    top: 48%;
+    transform: translateY(-48%) rotate(270deg);
+  }
