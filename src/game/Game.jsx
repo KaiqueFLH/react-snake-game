@@ -78,7 +78,8 @@ export default function Game() {
           ];
           setSnake(newSnake);
           alert("Game Over");
-          window.location.reload();
+          window.location.href = "/";
+
           return;
         }
         if (newSnake.length === 100) {
@@ -142,16 +143,15 @@ export default function Game() {
     setSnakeBoard(newSnakeBoard);
   };
 
-  const {pers} = useContext(PersContext); 
-
+  const { pers } = useContext(PersContext);
 
   return (
     <>
       <div className="geralDiv">
         <div className="scoreBoard">
-          <h1>JOGO DO RATÃO</h1>
+          <h1>JOGO DO {pers.name}</h1>
 
-          {gameStarted && <h2>Tamanho do seu Rato: {snake.length}</h2>}
+          {gameStarted && <h2>Tamanho do seu {pers.name}: {snake.length}</h2>}
         </div>
 
         <section>
@@ -161,7 +161,7 @@ export default function Game() {
                 {row.map((cell, cellIndex) => {
                   if (cell === "X") {
                     return (
-                      <div key={cellIndex} className="cellBodySnake"></div>
+                      <div key={cellIndex} style={{backgroundColor:pers.colorBody}} className="cellBodySnake"></div>
                     );
                   } else if (cell === "()") {
                     let tongueClass = "";
@@ -208,7 +208,7 @@ export default function Game() {
           })}
         </section>
 
-        <button onClick={() => start()}>Iniciar Jogo do Ratão.</button>
+        <button onClick={() => start()}>Iniciar Jogo do {pers.name}.</button>
       </div>
     </>
   );
